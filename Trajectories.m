@@ -1,4 +1,4 @@
-function r= Trajectories (sizexy,ntrajectories,circular,drift,diffusion)
+function [rx, ry, rclass]= Trajectories (sizexy,ntrajectories,circular,drift,diffusion, window_width)
 
 %% set circular/drift/diffusion to 1 or 0
 %%
@@ -58,7 +58,7 @@ R=[0.5 5];
 D_s=[1 10];
 
 %Defines an empty cell array
-r={};
+rx={};ry={};rclass={};
 
 %simulate one particale trajectorie
 for ind=1: length(t_length)
@@ -66,6 +66,11 @@ for ind=1: length(t_length)
     %duration range of the trajectories
     durationRange=[a*t*0.4 a*0.6*t;b*t*0.4 b*0.6*t;c*t*0.4 c*0.6*t];
  [xCoordMat,yCoordMat,trajClass,errFlag]=simMultiMotionTypeTrajCIAN(1,volumeEdges,t,t_step,D,R,D_s,durationRange,0);
-   r{ind}=[xCoordMat,yCoordMat,trajClass,errFlag];
+   %r{ind}=[xCoordMat,yCoordMat,trajClass,errFlag];
+   [x_trajectories, y_trajectories, motion_class] = ...
+    segment_trajectories(xCoordMat, yCoordMat, trajClass, window_width);
+    rx{ind} = x_trajectories;
+    ry{ind} = y_trajectories;
+    rclass{ind} = motion_class;
 end
 end
