@@ -3,27 +3,28 @@ function [MSD] = extract_msd(traject)
 
 %input: a cell array of trajectories
 % x_traject{i} = window#i x window size
-% y_traject{1} = window#i x window size
+% all widows have the same size
 
 % output: 
 % MSD = u(Tau) = (1/T-tau) * sum((x_i+tau - x_i)^2) i to T-tau
 %   for T = total time frames, tau is time lag from [1 2 3 4 5];
-
+%output size: #Tau x #windows
 
 % size of trajectory
 nwind = size(traject,2); % number of windows
-length(traject{1})
+%disp('number of windows');
+%length(traject{1});
 taus_num = floor(length(traject{1})/4); % length of frame/4
 taus = 1:1:taus_num; 
 MSD = [];
-disp('nwind, tausnum, taus');
-nwind
-taus_num
-taus
-for t = 1:length(taus);
+%disp('nwind, tausnum, taus');
+%nwind
+%taus_num
+%taus
+for t = 1:taus_num;
     tau = taus(t);% tau
     u_tau_sum = 0;
-u_taus = zeros(1,nwind);
+    u_taus = zeros(1,nwind);
     for w = 1:nwind
         T = size(traject{w},2);% window size
         for ii = 1:T - tau
