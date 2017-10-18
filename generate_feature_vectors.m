@@ -20,8 +20,13 @@ function [feature_vector] = generate_feature_vectors(x, y)
 % [(anything x num_windows)] = calculation(x, y)
 % step 2 - append to feature array
 % vertcat(feature0, feature1, ...);
-first_feature = first_feature_calculation(x,y);
-second_feature = second_feature_calculation(x,y);
+%first_feature = first_feature_calculation(x,y);
+
+first_feature = extract_msd(x);
+second_feature = extract_msd(y); 
+
+%second_feature = second_feature_calculation(x,y);
+
 feature_vector = vertcat(first_feature, second_feature);
 end
 
