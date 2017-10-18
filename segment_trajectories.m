@@ -37,11 +37,7 @@ function [x_trajectories, y_trajectories, motion_class] = ...
 
 x_size = size(x);
 num_traj = x_size(1);
-traj_length = x_size(2);
-
-% calculate number of windows
-num_windows = 1 + (traj_length - window_width);
-segmented_size = [num_windows, num_traj];
+%traj_length = x_size(2);
 
 % preallocate outputs
 x_trajectories = cell(1, num_traj);
@@ -49,6 +45,11 @@ y_trajectories = cell(1, num_traj);
 motion_class = cell(1, num_traj);
 
 for ti = 1:num_traj
+    % calculate number of windows, dropping NaNs where the track ends
+    traj_length = sum(~isnan(x(ti, :)));
+    num_windows = 1 + (traj_length - window_width);
+    segmented_size = [num_windows, window_width];
+    
     % first, expand out ground truth
     num_class_seg = size(traj_class{ti}); num_class_seg = num_class_seg(1);
     ground_truth = zeros(1, traj_length);
@@ -76,7 +77,7 @@ for ti = 1:num_traj
     end
     x_trajectories{ti} = x_traj;
     y_trajectories{ti} = y_traj;
-    motion_class{t} = mot_class;
+    motion_class{ti} = mot_class;
 end
 end
 
