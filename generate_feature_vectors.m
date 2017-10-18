@@ -25,7 +25,8 @@ function [feature_vector] = generate_feature_vectors(x, y)
 first_feature = extract_msd(x);
 second_feature = extract_msd(y); 
 aspect_ratio = calc_aspect_ratio(x, y);
+cardinality = calc_cardinality(x, y);
 
-feature_vector = vertcat(first_feature, second_feature, aspect_ratio);
+feature_vector = vertcat(first_feature, second_feature, aspect_ratio, cardinality);
 end
 
