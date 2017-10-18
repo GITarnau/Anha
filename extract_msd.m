@@ -30,7 +30,7 @@ for t = 1:taus_num;
         for ii = 1:T - tau
             pos = ii;
             pos_tau = ii+tau;
-            ssquare = (traject(w)(pos_tau)- traject(w)(pos))^2;
+            ssquare = (traject(w,pos_tau)- traject(w,pos))^2;
             u_tau_sum = u_tau_sum + ssquare;
         end
         u_taus(w) = u_tau_sum/(T-tau);
