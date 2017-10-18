@@ -69,8 +69,8 @@ for ind=1: length(t_length)
    %r{ind}=[xCoordMat,yCoordMat,trajClass,errFlag];
    [x_trajectories, y_trajectories, motion_class] = ...
     segment_trajectories(xCoordMat, yCoordMat, trajClass, window_width);
-    rx{ind} = x_trajectories;
-    ry{ind} = y_trajectories;
-    rclass{ind} = motion_class;
+    rx{ind} = x_trajectories{1};
+    ry{ind} = y_trajectories{1};
+    rclass{ind} = motion_class{1};
 end
 end
