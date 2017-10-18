@@ -22,7 +22,7 @@ end
 num_traj = length(rx);
 feature_vectors = cell(1, num_traj);
 for traj_ind = 1:num_traj
-    [feature_vector] = generate_feature_vectors(rx{traj_ind}, ry{traj_ind});
+    [feature_vectors{traj_ind}] = generate_feature_vectors(rx{traj_ind}, ry{traj_ind});
 end
 
 %% TRAIN ECOC SVM-Multiclass
