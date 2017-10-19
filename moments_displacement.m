@@ -18,7 +18,7 @@ nwind = size(traject,1); % number of windows
 taus_num = floor(length(traject(1,:))/4); % length of frame/4
 taus = 1:1:taus_num; 
 md = [];
-disp('nwind, tausnum, taus');
+% disp('nwind, tausnum, taus');
 % nwind
 % taus_num
 % taus
@@ -32,8 +32,8 @@ for t = 1:taus_num;
             pos = ii;
             pos_tau = ii+tau;
             dispn = (abs(traject(w,pos_tau)- traject(w,pos)))^k;
-            disp('disp');
-            disp(dispn);
+%             disp('disp');
+%             disp(dispn);
             disp_sum = disp_sum + dispn;
         end
         u_disp(w) = disp_sum/(T-tau);
