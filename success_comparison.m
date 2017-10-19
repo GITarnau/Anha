@@ -51,7 +51,7 @@ accswitch = -1;
 if nswitch ~= 0
     accswitch = correctswitch/nswitch;
 end
-accuracy = vertcat([acctmp,accswitch, traject_length]);
+accuracy = acctmp;%vertcat([acctmp,accswitch, traject_length]);
 end
 
 
