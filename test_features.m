@@ -10,23 +10,25 @@ num_features = fv_size(1);
 
 for fi = 1:num_features
     feature = [];
-    group = [];
+    class = [];
     
     for ti=1:num_traj
         to_append = feature_vector_array{ti}(fi, :);
         feature = [feature to_append];
-        group = [group ti*ones(1, length(to_append))];
+        class = [class mode(motion_class{ti}(:))*ones(1,length(to_append))];  %ti*ones(1, length(to_append))];
     end
-end
-
-
-% now test each feature
-num_significant = zeros(1, num_features);
-for fi = 1:num_features
-    [p,tbl,stats] = kruskalwallis(feature, group, 'off');
+    
+    % now test each feature
+    num_significant = zeros(1, num_features);
+%     for fi = 1:num_features
+    [p,tbl,stats] = kruskalwallis(feature, class, 'off');
     c = multcompare(stats, 'CType','dunn-sidak', 'Display', 'off');
     num_significant(fi) = sum(c(:, end) < 0.05);
+%     end
 end
+
+
+
 
 % for ti=1:num_traj
 %     fvec = feature_vector_array{ti};

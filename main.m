@@ -43,9 +43,11 @@ feature_vectors = cell(1, num_traj);
 for traj_ind = 1:num_traj
     [feature_vectors{traj_ind}] = generate_feature_vectors(rx{traj_ind}, ry{traj_ind});
 end
-
+%% normalize features
+% calculate mean and standard deviation for each feature
+feature_vectors = normalize_features(feature_vectors, rclass);
 %% Determine which parameters are useful
-goodness = test_features(feature_vectors);
+goodness = test_features(feature_vectors, rclass);
 figure()
 scatter(1:length(goodness), goodness)
 %% TRAIN ECOC ( error-correcting output codes) SVM-Multiclass
