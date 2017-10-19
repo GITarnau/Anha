@@ -11,10 +11,10 @@ function [MSD] = extract_msd(traject)
 %output size: #Tau x #windows
 
 % size of trajectory
-nwind = size(traject,2); % number of windows
+nwind = size(traject,1); % number of windows
 %disp('number of windows');
 %length(traject{1});
-taus_num = floor(length(traject{1})/4); % length of frame/4
+taus_num = floor(length(traject(1))/4); % length of frame/4
 taus = 1:1:taus_num; 
 MSD = [];
 %disp('nwind, tausnum, taus');
@@ -26,11 +26,11 @@ for t = 1:taus_num;
     u_tau_sum = 0;
     u_taus = zeros(1,nwind);
     for w = 1:nwind
-        T = size(traject{w},2);% window size
+        T = size(traject(w),2);% window size
         for ii = 1:T - tau
             pos = ii;
             pos_tau = ii+tau;
-            ssquare = (traject{w}(pos_tau)- traject{w}(pos))^2;
+            ssquare = (traject(w,pos_tau)- traject(w,pos))^2;
             u_tau_sum = u_tau_sum + ssquare;
         end
         u_taus(w) = u_tau_sum/(T-tau);
