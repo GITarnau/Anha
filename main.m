@@ -1,3 +1,6 @@
+clear all
+close all
+
 window_width=20;
 %% load and segment data
 simulate = 1;
@@ -5,7 +8,7 @@ simulate = 1;
 if simulate
     % simulate and segment the data
     sizexy = 100;
-    ntrajectories = 100;
+    ntrajectories = 10;
     %simulates circular trajectories
     circular=1; drift=0; diffusion=0;
     [rx_c, ry_c, rclass_c] = Trajectories (sizexy,ntrajectories,circular,drift,diffusion, window_width);
@@ -72,9 +75,8 @@ for ind=1:length(rclass)
 end
 
 
-%Generation of the feature labels
 
-predicted_labels=Mdl.predict(Feature_matrix);
+
 
 
 %% TRAIN ECOC ( error-correcting output codes) SVM-Multiclass
@@ -87,10 +89,12 @@ predicted_labels=Mdl.predict(Feature_matrix);
 
 Mdl = fitcecoc(Feature_matrix,labels);
 
+
 %% compares prediction and actual features
+predicted_labels=Mdl.predict(Feature_matrix);
 
 [con, order] =confusionmat(labels, predicted_labels);
-accuracy= sum(diag(c))/sum(c(:));
+accuracy= sum(diag(con))/sum(con(:));
 
 
 %% Apply ECOC to real data
