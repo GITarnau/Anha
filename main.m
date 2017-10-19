@@ -100,13 +100,14 @@ if training
     accuracy= sum(diag(con))/sum(con(:));
 elseif compare
     % load data, x, y, and ground_truth
-%     [drx, dry, dgt] = ...
-%     segment_trajectories(x, y, traj_class, window_width);
+    load('testDataRearranged4Students.mat')
+    [drx, dry] = ...
+    segment_only_trajectories(xCoordMat, yCoordMat, window_width);
     % REMOVE NEXT LINE
-    [drx, dry, dgt] = Trajectories (sizexy,ntrajectories,circular,drift,diffusion, window_width);
-    dgt = dgt(~cellfun('isempty',drx));
-    dry = dry(~cellfun('isempty',drx));
-    drx = drx(~cellfun('isempty',drx));
+% %     [drx, dry, dgt] = Trajectories (sizexy,ntrajectories,circular,drift,diffusion, window_width);
+%     dgt = dgt(~cellfun('isempty',drx));
+%     dry = dry(~cellfun('isempty',drx));
+%     drx = drx(~cellfun('isempty',drx));
     num_traj = length(drx);
     
 
@@ -125,15 +126,15 @@ elseif compare
     end
     % have a matrix of column features and row windows
     Feature_matrix=Feature_matrix' ;
-    labels=[];
-    for ind=1:length(dgt)
-
-        full_labels = dgt{ind}; 
-        if length(unique(full_labels))==1
-            l=full_labels(:,1);
-            labels =[labels; l];
-        end
-    end
+%     labels=[];
+%     for ind=1:length(dgt)
+% 
+%         full_labels = dgt{ind}; 
+%         if length(unique(full_labels))==1
+%             l=full_labels(:,1);
+%             labels =[labels; l];
+%         end
+%     end
     predicted_labels=Mdl.predict(Feature_matrix);
     % need to go from per window ground truth out to full time series
 %     merged = {}
@@ -141,6 +142,10 @@ elseif compare
 %         num_windows = length(series_class{ti});
 % %         merged{ti} = zeros(
 %     end
+    %% LOAD GROUND TRUTH HERE
+    
+    [drx, dry, dgt] = ...
+    segment_trajectories(x, y, ground_truth, window_width);
     series_class = combine_classes(dgt,1);
     % now need to go from length trajectories out to full time series
     predicted = {};

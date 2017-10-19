@@ -47,8 +47,14 @@ motion_class = cell(1, num_traj);
 for ti = 1:num_traj
     % calculate number of windows, dropping NaNs where the track ends
     traj_length = sum(~isnan(x(ti, :)));
-    num_windows = 1 + (traj_length - window_width);
-    segmented_size = [num_windows, window_width];
+    if traj_length >= window_width
+        num_windows = 1 + (traj_length - window_width);
+        segmented_size = [num_windows, window_width];
+    else
+        num_windows=1;
+        segmented_size = [num_windows,traj_length];
+        window_width=traj_length;
+    end
     
     % first, expand out ground truth
     num_class_seg = size(traj_class{ti}); num_class_seg = num_class_seg(1);
