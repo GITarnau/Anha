@@ -22,13 +22,28 @@ function [feature_vector] = generate_feature_vectors(x, y)
 % vertcat(feature0, feature1, ...);
 %first_feature = first_feature_calculation(x,y);
 
-first_feature = extract_msd(x);
-second_feature = extract_msd(y); 
+% first_feature = extract_msd(x);
+% second_feature = extract_msd(y); 
+speedconf = speedConfinement(x, y);
 aspect_ratio = calc_aspect_ratio(x, y);
 cardinality = calc_cardinality(x, y);
+moment1 = moments_displacement(x,1);
+moment2 = moments_displacement(x,2);
+moment3 = moments_displacement(x,3);
+moment4 = moments_displacement(x,4);
+moment5 = moments_displacement(x,5);
+moment6 = moments_displacement(x,6);
+ymoment1 = moments_displacement(y,1);
+ymoment2 = moments_displacement(y,2);
+ymoment3 = moments_displacement(y,3);
+ymoment4 = moments_displacement(y,4);
+ymoment5 = moments_displacement(y,5);
+ymoment6 = moments_displacement(y,6);
 num_intersect = calc_intersection_points(x, y);
 
-feature_vector = vertcat(first_feature, second_feature, aspect_ratio, ...
-    cardinality, num_intersect);
+feature_vector = vertcat(speedconf, aspect_ratio, cardinality,...
+    moment1, moment2, moment3, moment4, moment5, moment6,...
+    ymoment1, ymoment2, ymoment3, ymoment4, ymoment5, ymoment6,...
+    num_intersect);
 end
 
