@@ -5,7 +5,7 @@ simulate = 1;
 if simulate
     % simulate and segment the data
     sizexy = 100;
-    ntrajectories = 10;
+    ntrajectories = 100;
     %simulates circular trajectories
     circular=1; drift=0; diffusion=0;
     [rx_c, ry_c, rclass_c] = Trajectories (sizexy,ntrajectories,circular,drift,diffusion, window_width);
@@ -43,13 +43,40 @@ feature_vectors = cell(1, num_traj);
 for traj_ind = 1:num_traj
     [feature_vectors{traj_ind}] = generate_feature_vectors(rx{traj_ind}, ry{traj_ind});
 end
+
 %% normalize features
 % calculate mean and standard deviation for each feature
-feature_vectors = normalize_features(feature_vectors, rclass);
+% feature_vectors = normalize_features(feature_vectors, rclass);
 %% Determine which parameters are useful
 goodness = test_features(feature_vectors, rclass);
 figure()
 scatter(1:length(goodness), goodness)
+
+%% generates the feature table
+Feature_matrix=[];
+for ind=1:length(feature_vectors)
+    F= feature_vectors{ind};
+    Feature_matrix=[Feature_matrix, F];
+    
+end
+% have a matrix of column features and row windows
+Feature_matrix=Feature_matrix' ;
+labels=[];
+for ind=1:length(rclass)
+    
+    full_labels = rclass{ind}; 
+    if length(unique(full_labels))==1
+        l=full_labels(:,1);
+        labels =[labels; l];
+    end
+end
+
+
+%Generation of the feature labels
+
+predicted_labels=Mdl.predict(Feature_matrix);
+
+
 %% TRAIN ECOC ( error-correcting output codes) SVM-Multiclass
 
 %Training of ECOC, Tbl is a table containing all the feature values for
@@ -58,8 +85,12 @@ scatter(1:length(goodness), goodness)
 %Features is a column vector containing the feature names
 
 
-Mdl = fitcecoc(Tbl,Features);
+Mdl = fitcecoc(Feature_matrix,labels);
 
+%% compares prediction and actual features
+
+[con, order] =confusionmat(labels, predicted_labels);
+accuracy= sum(diag(c))/sum(c(:));
 
 
 %% Apply ECOC to real data
