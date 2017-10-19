@@ -26,7 +26,9 @@ first_feature = extract_msd(x);
 second_feature = extract_msd(y); 
 aspect_ratio = calc_aspect_ratio(x, y);
 cardinality = calc_cardinality(x, y);
+num_intersect = calc_intersection_points(x, y);
 
-feature_vector = vertcat(first_feature, second_feature, aspect_ratio, cardinality);
+feature_vector = vertcat(first_feature, second_feature, aspect_ratio, ...
+    cardinality, num_intersect);
 end
 

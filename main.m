@@ -18,8 +18,15 @@ else
 end
 
 %% extract features
-% loop through trajectories, extract their features
+% first check that all trajectories are still valid, remove those that
+% aren't
+rclass = rclass(~cellfun('isempty',rx));
+ry = ry(~cellfun('isempty',rx));
+rx = rx(~cellfun('isempty',rx));
 num_traj = length(rx);
+
+
+% loop through trajectories, extract their features
 feature_vectors = cell(1, num_traj);
 for traj_ind = 1:num_traj
     [feature_vectors{traj_ind}] = generate_feature_vectors(rx{traj_ind}, ry{traj_ind});
