@@ -1,13 +1,25 @@
 window_width=20;
 %% load and segment data
 simulate = 1;
+
 if simulate
     % simulate and segment the data
     sizexy = 100;
     ntrajectories = 10;
-    circular=1; drift=1; diffusion=1;
-
-    [rx, ry, rclass] = Trajectories (sizexy,ntrajectories,circular,drift,diffusion, window_width);
+    %simulates circular trajectories
+    circular=1; drift=0; diffusion=0;
+    [rx_c, ry_c, rclass_c] = Trajectories (sizexy,ntrajectories,circular,drift,diffusion, window_width);
+    %simulates drift trajectories
+    circular=0; drift=1; diffusion=0;
+    [rx_dr, ry_dr, rclass_dr] = Trajectories (sizexy,ntrajectories,circular,drift,diffusion, window_width);
+    %simulates Diffusion trajectories
+    circular=0; drift=0; diffusion=1;
+    [rx_di, ry_di, rclass_di] = Trajectories (sizexy,ntrajectories,circular,drift,diffusion, window_width);
+    %concatenates all the trajectories
+    rx=[rx_c;rx_dr;rx_di];
+    ry=[ry_c;ry_dr;ry_di];
+    rclass=[rclass_c;rclass_dr;rclass_di];
+    rtot=[rx ry rclass];
     
 else
     % load in data
@@ -36,8 +48,15 @@ end
 goodness = test_features(feature_vectors);
 figure()
 scatter(1:length(goodness), goodness)
-%% TRAIN ECOC SVM-Multiclass
+%% TRAIN ECOC ( error-correcting output codes) SVM-Multiclass
 
+%Training of ECOC, Tbl is a table containing all the feature values for
+%pure trajectories. Trajecteries are column and different features are the
+%row of the tablle
+%Features is a column vector containing the feature names
+
+
+Mdl = fitcecoc(Tbl,Features);
 
 
 
