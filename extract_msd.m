@@ -14,7 +14,8 @@ function [MSD] = extract_msd(traject)
 nwind = size(traject,1); % number of windows
 %disp('number of windows');
 %length(traject{1});
-taus_num = floor(length(traject(1))/4); % length of frame/4
+
+taus_num = floor(length(traject(1, :))/4); % length of frame/4
 taus = 1:1:taus_num; 
 MSD = [];
 %disp('nwind, tausnum, taus');
